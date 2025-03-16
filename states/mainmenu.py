@@ -6,8 +6,8 @@ FRAMERATE = 60
 class MainMenu:
     def __init__(self, app):
         self.app = app
-        self.Aimage = Image(self.app.screen, "textures/shrek.png", (0, 0), 0.0, (200, 200))
-        self.Bimage = Image(self.app.screen, "textures/sally.jpg", (-100, -100), 0.0, (160, 160))
+        self.Aimage = Image(self.app.screen, "textures/shrek.png", (0, 0), (200, 200))
+        self.Bimage = Image(self.app.screen, "textures/sally.jpg", (-100, -100), (160, 160))
         self.tri = Triangle(self.app.screen, (0, 0), (-10, 30), (100, 0), (0, 100), color=(1, 0.4, 0, 1))
         self.rec = Rectangle(self.app.screen, (40, 40), (90, 100), color=(1, 0.4, 0, 1))
         

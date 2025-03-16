@@ -14,7 +14,20 @@ from numpy import pi, sin, cos, multiply
 
 
 
-class Grapich:
+"""
+Parameters:
+- width (window width)
+- height (window height)
+- zoom (zoom)
+- antialiasing (smoother edges)
+- buffers (antialiasing buffers)
+- samples (antialiasing samples)
+
+Methods
+- clear_screen (clears the screen and fills it with a given color)
+- drawText (draws text on the screen given a pygame font)
+"""
+class Graphic:
     def __init__(self, width, height, zoom = None, antialiasing = False, buffers = 1, samples = 4):
         self.width = width
         self.height = height
@@ -63,11 +76,6 @@ class Grapich:
     
 
 
-    def get_display_info(self):
-        return self.width, self.height, self.zoom, self.aspect_ratio
-
-
-
     def clear_screen(self, color = (0.0, 0.0, 0.0, 0.0)):
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
@@ -84,9 +92,17 @@ class Grapich:
 
 
 
-
+"""
+Parameters:
+- graphic (graphics window)
+- pos (position)
+- a (point a)
+- b (point b)
+- angle (rotation angle)
+- color (color)
+"""
 class Line:
-    def __init__(self, graphic: Grapich, pos: tuple, a: tuple, b: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
         self.color = color
@@ -114,8 +130,17 @@ class Line:
 
 
 
+"""
+Parameters:
+- graphic (graphics window)
+- pos (position)
+- radius (radius)
+- segments (number og edges)
+- angle (rotation angle)
+- color (color)
+"""
 class Polygon:
-    def __init__(self, graphic: Grapich, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
         if type(radius) == float or type(radius) == int:
@@ -150,9 +175,18 @@ class Polygon:
         
 
 
-
+"""
+Parameters:
+- graphic (graphics window)
+- pos (position)
+- a (point a)
+- b (point b)
+- c (point c)
+- angle (rotation angle)
+- color (color)
+"""
 class Triangle:
-    def __init__(self, graphic: Grapich, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic 
 
         self.color = color
@@ -183,8 +217,19 @@ class Triangle:
 
 
 
+"""
+Parameters:
+- graphic (graphics window)
+- pos (position)
+- size (size)
+- angle (rotation angle)
+- color (color)
+
+Methods:
+- get_rect (returns a pygame rect of the rectangle)
+"""
 class Rectangle:
-    def __init__(self, graphic: Grapich, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
         self.color = color
@@ -223,8 +268,18 @@ class Rectangle:
 
 
 
+"""
+Parameters:
+- graphic (graphics window)
+- image_path (path to image file)
+- pos (position)
+- size (size)
+- angle (rotation angle)
+- anchor (anchorpoint of the image)
+- color (color)
+"""
 class Image:
-    def __init__(self, graphic: Grapich, image_path: str, pos: tuple, angle: float, size: tuple, anchor = (0.0, 0.0), color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, image_path: str, pos: tuple, size: tuple, angle = 0, anchor = (0.0, 0.0), color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
         self.color = color
