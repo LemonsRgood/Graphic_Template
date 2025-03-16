@@ -88,7 +88,18 @@ class Graphic:
     def drawText(self, font: pygame.font.Font, pos: tuple, text: str, anchor = (0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)):                                           
         textSurface = font.render(text, True, multiply(color, 255)).convert_alpha()
         textData = pygame.image.tostring(textSurface, "RGBA", True)
-        glWindowPos2d(self.width / 2 + pos[0] - anchor[0] * textSurface.get_width(), self.height / 2 + pos[1] - anchor[1] * textSurface.get_height())
+        if self.aspect_ratio >= 1:
+            pos = (
+                self.width  / 2 + self.width  * pos[0] / (2 * self.zoom) - anchor[0] * textSurface.get_width(), 
+                self.height / 2 + self.height * pos[1] / (2 * self.zoom / self.aspect_ratio) - anchor[1] * textSurface.get_height()
+            )
+        else:
+            pos = (
+                self.width  / 2 + self.width  * pos[0] / (2 * self.zoom / self.aspect_ratio) - anchor[0] * textSurface.get_width(), 
+                self.height / 2 + self.height * pos[1] / (2 * self.zoom) - anchor[1] * textSurface.get_height()
+            )
+        
+        glWindowPos2d(*pos)
         glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
 
 
