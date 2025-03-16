@@ -14,7 +14,7 @@ from numpy import pi, sin, cos, multiply
 
 
 
-class Grapichs:
+class Grapich:
     def __init__(self, width, height, zoom = None, antialiasing = False, buffers = 1, samples = 4):
         self.width = width
         self.height = height
@@ -25,22 +25,26 @@ class Grapichs:
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, buffers)
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, samples)
         
-        screen = pygame.display.set_mode((width, height), pygame.RESIZABLE | DOUBLEBUF | OPENGL)
+
+        self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE | DOUBLEBUF | OPENGL)
+
 
         glViewport(0, 0, width, height)  # Set viewport to cover new window
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
 
+
         if zoom:
-            aspect_ratio = width / height if height > 0 else 1
+            self.aspect_ratio = width / height if height > 0 else 1
             
             # Maintain aspect ratio in orthographic projection
-            if aspect_ratio >= 1:
-                gluOrtho2D(-zoom, zoom, -zoom / aspect_ratio, zoom / aspect_ratio)
+            if self.aspect_ratio >= 1:
+                gluOrtho2D(-zoom, zoom, -zoom / self.aspect_ratio, zoom / self.aspect_ratio)
             else:
-                gluOrtho2D(-zoom * aspect_ratio, zoom * aspect_ratio, -zoom, zoom)
+                gluOrtho2D(-zoom * self.aspect_ratio, zoom * self.aspect_ratio, -zoom, zoom)
                 
         else:
+            self.aspect_ratio = 1
             gluOrtho2D(-width // 2, width // 2, -height // 2, height // 2)
         
 
@@ -56,8 +60,11 @@ class Grapichs:
 
         glEnable(GL_LINE_SMOOTH)
         glHint(GL_LINE_SMOOTH_HINT, GL_NICEST)
+    
 
-        return screen
+
+    def get_display_info(self):
+        return self.width, self.height, self.zoom, self.aspect_ratio
 
 
 
@@ -68,16 +75,20 @@ class Grapichs:
 
 
 
-def drawText(screen: pygame.Surface, font: pygame.font.Font, pos: tuple, text: str, anchor = (0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)):                                           
-    textSurface = font.render(text, True, multiply(color, 255)).convert_alpha()
-    textData = pygame.image.tostring(textSurface, "RGBA", True)
-    glWindowPos2d(screen.get_width() / 2 + pos[0] - anchor[0] * textSurface.get_width(), screen.get_height() / 2 + pos[1] - anchor[1] * textSurface.get_height())
-    glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
+    def drawText(self, font: pygame.font.Font, pos: tuple, text: str, anchor = (0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)):                                           
+        textSurface = font.render(text, True, multiply(color, 255)).convert_alpha()
+        textData = pygame.image.tostring(textSurface, "RGBA", True)
+        glWindowPos2d(self.width / 2 + pos[0] - anchor[0] * textSurface.get_width(), self.height / 2 + pos[1] - anchor[1] * textSurface.get_height())
+        glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
+
+
 
 
 
 class Line:
-    def __init__(self, pos: tuple, a: tuple, b: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Grapich, pos: tuple, a: tuple, b: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+        self.graphic = graphic
+
         self.color = color
         self.pos = pos
         self.a = a
@@ -104,16 +115,18 @@ class Line:
 
 
 class Polygon:
-    def __init__(self, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
-            if type(radius) == float or type(radius) == int:
-                self.radius = (radius, radius)
-            else:
-                self.radius = radius
+    def __init__(self, graphic: Grapich, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+        self.graphic = graphic
 
-            self.color = color
-            self.pos = pos
-            self.segments = segments
-            self.angle = angle
+        if type(radius) == float or type(radius) == int:
+            self.radius = (radius, radius)
+        else:
+            self.radius = radius
+
+        self.color = color
+        self.pos = pos
+        self.segments = segments
+        self.angle = angle
     
 
     def render(self):
@@ -139,7 +152,9 @@ class Polygon:
 
 
 class Triangle:
-    def __init__(self, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Grapich, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+        self.graphic = graphic 
+
         self.color = color
         self.pos = pos
         self.a = a
@@ -169,7 +184,9 @@ class Triangle:
 
 
 class Rectangle:
-    def __init__(self, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Grapich, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+        self.graphic = graphic
+
         self.color = color
         self.pos = pos
         self.size = size
@@ -196,16 +213,20 @@ class Rectangle:
         glColor4f(1.0, 1.0, 1.0, 1.0)
     
     
-    def get_rect(self, screen) -> pygame.Rect:
-        global aspect_ratio, true_zoom, true_width, true_height
-        size = (self.size[0] * true_width/(true_zoom * 2), self.size[1] * true_height / ((true_zoom / aspect_ratio) * 2))
-        pos = (self.pos[0] * true_width/(true_zoom * 2), self.pos[1] * true_height / ((true_zoom/aspect_ratio) * 2))
-        return pygame.Rect((pos[0] + (screen.get_width() / 2), pos[1] + (screen.get_height() / 2) - size[1]), size)
+    def get_rect(self) -> pygame.Rect:
+        zoom, height, width, aspect_ratio = self.graphic.zoom, self.graphic.height, self.graphic.width, self.graphic.aspect_ratio
+        size = (self.size[0] * width/(zoom * 2), self.size[1] * height / ((zoom / aspect_ratio) * 2))
+
+        pos = (self.pos[0] * width/(zoom * 2), -self.pos[1] * height / ((zoom / aspect_ratio) * 2))
+
+        return pygame.Rect((pos[0] + (width / 2), pos[1] + (height / 2) - size[1]), size)
 
 
 
 class Image:
-    def __init__(self, image_path: str, pos: tuple, angle: float, size: tuple, anchor = (0.0, 0.0), color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Grapich, image_path: str, pos: tuple, angle: float, size: tuple, anchor = (0.0, 0.0), color = (1.0, 1.0, 1.0, 1.0)):
+        self.graphic = graphic
+
         self.color = color
         self.pos = pos
         self.angle = angle

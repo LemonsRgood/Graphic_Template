@@ -23,7 +23,7 @@ class App:
         self.clock = pygame.time.Clock()
 
         self.zoom = 400
-        self.screen = init_graphics(width, height, self.zoom, True, 1, 4)
+        self.screen = Grapich(width, height, self.zoom, True, 1, 4)
         pygame.display.set_caption("Very gud gem")
 
 
