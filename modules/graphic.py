@@ -14,20 +14,22 @@ from numpy import pi, sin, cos, multiply
 
 
 
-"""
-Parameters:
-- width (window width)
-- height (window height)
-- zoom (zoom)
-- antialiasing (smoother edges)
-- buffers (antialiasing buffers)
-- samples (antialiasing samples)
 
-Methods
-- clear_screen (clears the screen and fills it with a given color)
-- drawText (draws text on the screen given a pygame font)
-"""
 class Graphic:
+    """
+    Parameters:
+    - width (window width)
+    - height (window height)
+    - zoom (zoom)
+    - antialiasing (smoother edges)
+    - buffers (antialiasing buffers)
+    - samples (antialiasing samples)
+
+    Methods
+    - clear_screen (clears the screen and fills it with a given color)
+    - drawText (draws text on the screen given a pygame font)
+    """
+
     def __init__(self, width, height, zoom = None, antialiasing = False, buffers = 1, samples = 4):
         self.width = width
         self.height = height
@@ -92,16 +94,17 @@ class Graphic:
 
 
 
-"""
-Parameters:
-- graphic (graphics window)
-- pos (position)
-- a (point a)
-- b (point b)
-- angle (rotation angle)
-- color (color)
-"""
 class Line:
+    """
+    Parameters:
+    - graphic (graphics window)
+    - pos (position)
+    - a (point a)
+    - b (point b)
+    - angle (rotation angle)
+    - color (color)
+    """
+
     def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
@@ -130,16 +133,18 @@ class Line:
 
 
 
-"""
-Parameters:
-- graphic (graphics window)
-- pos (position)
-- radius (radius)
-- segments (number og edges)
-- angle (rotation angle)
-- color (color)
-"""
+
 class Polygon:
+    """
+    Parameters:
+    - graphic (graphics window)
+    - pos (position)
+    - radius (radius)
+    - segments (number og edges)
+    - angle (rotation angle)
+    - color (color)
+    """
+
     def __init__(self, graphic: Graphic, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
@@ -175,17 +180,18 @@ class Polygon:
         
 
 
-"""
-Parameters:
-- graphic (graphics window)
-- pos (position)
-- a (point a)
-- b (point b)
-- c (point c)
-- angle (rotation angle)
-- color (color)
-"""
 class Triangle:
+    """
+    Parameters:
+    - graphic (graphics window)
+    - pos (position)
+    - a (point a)
+    - b (point b)
+    - c (point c)
+    - angle (rotation angle)
+    - color (color)
+    """
+
     def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic 
 
@@ -217,18 +223,20 @@ class Triangle:
 
 
 
-"""
-Parameters:
-- graphic (graphics window)
-- pos (position)
-- size (size)
-- angle (rotation angle)
-- color (color)
 
-Methods:
-- get_rect (returns a pygame rect of the rectangle)
-"""
 class Rectangle:
+    """
+    Parameters:
+    - graphic (graphics window)
+    - pos (position)
+    - size (size)
+    - angle (rotation angle)
+    - color (color)
+
+    Methods:
+    - get_rect (returns a pygame rect of the rectangle)
+    """
+
     def __init__(self, graphic: Graphic, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
@@ -268,17 +276,19 @@ class Rectangle:
 
 
 
-"""
-Parameters:
-- graphic (graphics window)
-- image_path (path to image file)
-- pos (position)
-- size (size)
-- angle (rotation angle)
-- anchor (anchorpoint of the image)
-- color (color)
-"""
+
 class Image:
+    """
+    Parameters:
+    - graphic (graphics window)
+    - image_path (path to image file)
+    - pos (position)
+    - size (size)
+    - angle (rotation angle)
+    - anchor (anchorpoint of the image)
+    - color (color)
+    """
+
     def __init__(self, graphic: Graphic, image_path: str, pos: tuple, size: tuple, angle = 0, anchor = (0.0, 0.0), color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
