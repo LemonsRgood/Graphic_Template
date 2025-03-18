@@ -260,12 +260,9 @@ class Rectangle:
     
     
     def get_rect(self) -> pygame.Rect:
-        height, width, aspect_ratio = self.graphic.height, self.graphic.width, self.graphic.aspect_ratio
-        size = (self.size[0] * width/(width * 2), self.size[1] * height / ((width / aspect_ratio) * 2))
-
-        pos = (self.pos[0] * width/(width * 2), -self.pos[1] * height / ((width / aspect_ratio) * 2))
-
-        return pygame.Rect((pos[0] + (width / 2), pos[1] + (height / 2) - size[1]), size)
+        size = (self.size[0] * 0.5, self.size[1] * 0.5)
+        pos = (self.pos[0] * 0.5, -self.pos[1] * 0.5)
+        return pygame.Rect((pos[0] + (self.graphic.width / 2), pos[1] + (self.graphic.height / 2) - size[1]), size)
 
 
 
