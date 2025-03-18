@@ -327,6 +327,18 @@ class Image:
 
 
 class Text(Image):
+    """
+    Parameters:
+    - graphic (graphics window)
+    - text (text)
+    - pos (position)
+    - size (text height)
+    - angle (rotation angle)
+    - anchor (anchorpoint of the image)
+    - antialiased (text antialiased)
+    - color (color)
+    """
+    
     def __init__(self, graphic: Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.0, 0.0), antialiased = True, color=(1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
         self.font = font
