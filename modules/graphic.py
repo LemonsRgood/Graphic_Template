@@ -43,17 +43,12 @@ class Graphic:
         self.screen = pygame.display.set_mode((width, height), pygame.RESIZABLE | DOUBLEBUF | OPENGL)
 
 
-        glViewport(0, 0, width, height)  # Set viewport to cover new window
+        glViewport(0, 0, width, height)
         glMatrixMode(GL_PROJECTION)
         glLoadIdentity()
-
-
-        self.aspect_ratio = width / height if height > 0 else 1
         
-        # Maintain aspect ratio in orthographic projection
-        gluOrtho2D(-width, width, -width / self.aspect_ratio, width / self.aspect_ratio)
-        
-        
+        self.aspect_ratio = width / height
+        gluOrtho2D(-width / 2, width / 2, -width / (2 * self.aspect_ratio), width / (2 * self.aspect_ratio))
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
@@ -279,7 +274,7 @@ class Image:
     - color (color)
     """
 
-    def __init__(self, graphic: Graphic, image_path: str, pos: tuple, size: tuple, angle = 0, anchor = (0.0, 0.0), color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, image_path: str, pos: tuple, size: tuple, angle = 0, anchor = (0.5, 0.5), color = (1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
 
         self.color = color
@@ -303,7 +298,7 @@ class Image:
     def render(self):
         # Apply rotation
         glPushMatrix()
-        glTranslatef(self.pos[0] - self.size[0] * self.anchor[0], self.pos[1] - self.size[1] * self.anchor[1], 0)
+        glTranslatef(self.pos[0] - self.size[0] * (self.anchor[0] - 0.5), self.pos[1] - self.size[1] * (self.anchor[1] - 0.5), 0)
         glRotatef(self.angle, 0, 0, 1)
         
 
@@ -339,7 +334,7 @@ class Text(Image):
     - color (color)
     """
     
-    def __init__(self, graphic: Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.0, 0.0), antialiased = True, color=(1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.5, 0.5), antialiased = True, color=(1.0, 1.0, 1.0, 1.0)):
         self.graphic = graphic
         self.font = font
         self.text = text
@@ -354,12 +349,10 @@ class Text(Image):
         self.update()
     
     
-    
     def set_size(self, size: float):
         self.text_size = size
         aspect_ratio = self.text_image.get_width() / self.text_image.get_height()
         self.size = (aspect_ratio * self.text_size, self.text_size)
-        
     
     
     def update(self):
@@ -368,7 +361,7 @@ class Text(Image):
         
         texture_data = pygame.image.tostring(self.text_image, "RGBA", True)
         self.width, self.height = self.text_image.get_size()
-
+        
         self.texture_id = glGenTextures(1)
         glBindTexture(GL_TEXTURE_2D, self.texture_id)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
