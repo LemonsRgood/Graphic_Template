@@ -16,6 +16,8 @@ class MainMenu:
         self.line = Line(self.app.screen, (-200, 60), (0, 0), (100, 0), 30, color=(1, 0.4, 0, 1))
         self.font = pygame.font.SysFont('arial', 64)
         
+        self.text = Text(self.app.screen, self.font, "LOL", (0, 0), 64)
+        
 
 
     def events(self):
@@ -23,7 +25,7 @@ class MainMenu:
             if event.type == pygame.QUIT: self.app.quit()
 
             elif event.type == pygame.VIDEORESIZE:
-                self.app.screen.__init__(event.w, event.h, self.app.zoom, True, 1, 4)
+                self.app.screen.__init__(event.w, event.h, True, 1, 4)
 
 
 
@@ -32,6 +34,7 @@ class MainMenu:
 
         self.Aimage.angle += 50 * dt
         self.Bimage.angle -= 30 * dt
+        self.text.set_size(64 + 32 * sin(time.time()))
 
         pos = pygame.mouse.get_pos()
         if self.rec.get_rect().collidepoint(pos):
@@ -50,8 +53,8 @@ class MainMenu:
         self.rec.render()
         self.circle.render()
         self.line.render()
-
-        self.app.screen.drawText(self.font, (0, 0), "LOL")
-
+        
+        self.text.render()
+        
         
         pygame.display.flip()

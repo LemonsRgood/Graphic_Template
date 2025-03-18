@@ -30,10 +30,9 @@ class Graphic:
     - drawText (draws text on the screen given a pygame font)
     """
 
-    def __init__(self, width, height, zoom = None, antialiasing = False, buffers = 1, samples = 4):
+    def __init__(self, width, height, antialiasing = False, buffers = 1, samples = 4):
         self.width = width
         self.height = height
-        self.zoom = zoom
 
         # Multisampling (Anti-aliasing) settings
         if antialiasing:
@@ -49,18 +48,11 @@ class Graphic:
         glLoadIdentity()
 
 
-        if zoom:
-            self.aspect_ratio = width / height if height > 0 else 1
-            
-            # Maintain aspect ratio in orthographic projection
-            if self.aspect_ratio >= 1:
-                gluOrtho2D(-zoom, zoom, -zoom / self.aspect_ratio, zoom / self.aspect_ratio)
-            else:
-                gluOrtho2D(-zoom * self.aspect_ratio, zoom * self.aspect_ratio, -zoom, zoom)
-                
-        else:
-            self.aspect_ratio = 1
-            gluOrtho2D(-width // 2, width // 2, -height // 2, height // 2)
+        self.aspect_ratio = width / height if height > 0 else 1
+        
+        # Maintain aspect ratio in orthographic projection
+        gluOrtho2D(-width, width, -width / self.aspect_ratio, width / self.aspect_ratio)
+        
         
 
         glMatrixMode(GL_MODELVIEW)
@@ -85,23 +77,13 @@ class Graphic:
 
 
 
-    def drawText(self, font: pygame.font.Font, pos: tuple, text: str, anchor = (0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)):                                           
+    def drawText(self, font: pygame.font.Font, pos: tuple, size: float, text: str, anchor = (0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)):                                           
         textSurface = font.render(text, True, multiply(color, 255)).convert_alpha()
         textData = pygame.image.tostring(textSurface, "RGBA", True)
-        if self.aspect_ratio >= 1:
-            pos = (
-                self.width  / 2 + self.width  * pos[0] / (2 * self.zoom) - anchor[0] * textSurface.get_width(), 
-                self.height / 2 + self.height * pos[1] / (2 * self.zoom / self.aspect_ratio) - anchor[1] * textSurface.get_height()
-            )
-        else:
-            pos = (
-                self.width  / 2 + self.width  * pos[0] / (2 * self.zoom / self.aspect_ratio) - anchor[0] * textSurface.get_width(), 
-                self.height / 2 + self.height * pos[1] / (2 * self.zoom) - anchor[1] * textSurface.get_height()
-            )
+        size = (textSurface.get_width() * size, textSurface.get_height() * size)
         
-        glWindowPos2d(*pos)
-        glDrawPixels(textSurface.get_width(), textSurface.get_height(), GL_RGBA, GL_UNSIGNED_BYTE, textData)
-
+        glWindowPos2d(pos[0] + self.width / 2 - size[0] * anchor[0], pos[1] + self.height / 2 - size[1] * anchor[1])
+        glDrawPixels(size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE, textData)
 
 
 
@@ -278,10 +260,10 @@ class Rectangle:
     
     
     def get_rect(self) -> pygame.Rect:
-        zoom, height, width, aspect_ratio = self.graphic.zoom, self.graphic.height, self.graphic.width, self.graphic.aspect_ratio
-        size = (self.size[0] * width/(zoom * 2), self.size[1] * height / ((zoom / aspect_ratio) * 2))
+        height, width, aspect_ratio = self.graphic.height, self.graphic.width, self.graphic.aspect_ratio
+        size = (self.size[0] * width/(width * 2), self.size[1] * height / ((width / aspect_ratio) * 2))
 
-        pos = (self.pos[0] * width/(zoom * 2), -self.pos[1] * height / ((zoom / aspect_ratio) * 2))
+        pos = (self.pos[0] * width/(width * 2), -self.pos[1] * height / ((width / aspect_ratio) * 2))
 
         return pygame.Rect((pos[0] + (width / 2), pos[1] + (height / 2) - size[1]), size)
 
@@ -346,3 +328,40 @@ class Image:
         glPopMatrix()
 
 
+
+class Text(Image):
+    def __init__(self, graphic: Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.0, 0.0), antialiased = True, color=(1.0, 1.0, 1.0, 1.0)):
+        self.graphic = graphic
+        self.font = font
+        self.text = text
+        
+        self.pos = pos
+        self.text_size = size
+        self.angle = angle
+        self.anchor = anchor
+        
+        self.antialiased = antialiased
+        self.color = color
+        self.update()
+    
+    
+    def set_size(self, size: float):
+        self.text_size = size
+        aspect_ratio = self.text_image.get_width() / self.text_image.get_height()
+        self.size = (aspect_ratio * self.text_size, self.text_size)
+        
+    
+    
+    def update(self):
+        self.text_image = self.font.render(self.text, self.antialiased, (255, 255, 255))
+        self.set_size(self.text_size)
+        
+        texture_data = pygame.image.tostring(self.text_image, "RGBA", True)
+        self.width, self.height = self.text_image.get_size()
+
+        self.texture_id = glGenTextures(1)
+        glBindTexture(GL_TEXTURE_2D, self.texture_id)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.width, self.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data)
+    
