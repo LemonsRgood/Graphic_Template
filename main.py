@@ -5,8 +5,7 @@ Code by:
 
 
 
-import pygame, socket, pickle
-from threading import Thread
+import pygame
 
 from states.state import State
 from states.mainmenu import MainMenu
@@ -22,7 +21,7 @@ class App:
 
         self.clock = pygame.time.Clock()
         
-        self.screen = Graphic(width, height, True, 1, 4)
+        self.screen = Graphic(width, height, False, True, 1, 4)
         pygame.display.set_caption("Very gud gem")
 
 
@@ -32,16 +31,6 @@ class App:
         }
         self.state : State = State(self)
         self.change_state("mainmenu")        
-    
-
-
-    # Server functions
-    def connect_to_ip(self, server_ip: str, port: int, client_name: str):
-        self.ADDR = (server_ip, port)
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect(self.ADDR)
-        self.name = client_name
-    
 
     
     def change_state(self, state: str):

@@ -20,7 +20,7 @@ class Graphic:
     Parameters:
     - width (window width)
     - height (window height)
-    - zoom (zoom)
+    - fir (choose a projection to fit everything on the screen)
     - antialiasing (smoother edges)
     - buffers (antialiasing buffers)
     - samples (antialiasing samples)
@@ -28,13 +28,18 @@ class Graphic:
     Methods
     - clear_screen (clears the screen and fills it with a given color)
     - drawText (draws text on the screen given a pygame font)
+    - get_mouse (returns mouse position in screen space)
     """
 
-    def __init__(self, width, height, antialiasing = False, buffers = 1, samples = 4):
+    def __init__(self, width: float, height: float, fit = False, antialiasing = False, buffers = 1, samples = 4):
         self.width = width
         self.height = height
+        self.fit = fit
 
         # Multisampling (Anti-aliasing) settings
+        self.antialiasing = antialiasing
+        self.buffers = buffers
+        self.samples = samples
         if antialiasing:
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLEBUFFERS, buffers)
             pygame.display.gl_set_attribute(pygame.GL_MULTISAMPLESAMPLES, samples)
@@ -48,7 +53,14 @@ class Graphic:
         glLoadIdentity()
         
         self.aspect_ratio = width / height
-        gluOrtho2D(-width / 2, width / 2, -width / (2 * self.aspect_ratio), width / (2 * self.aspect_ratio))
+        if fit:
+            if width < height: gluOrtho2D(-1, 1, -1 / self.aspect_ratio, 1 / self.aspect_ratio)
+            else:              gluOrtho2D(-1 * self.aspect_ratio, 1 * self.aspect_ratio, -1, 1)
+        else:
+            if width > height: gluOrtho2D(-1, 1, -1 / self.aspect_ratio, 1 / self.aspect_ratio)
+            else:              gluOrtho2D(-1 * self.aspect_ratio, 1 * self.aspect_ratio, -1, 1)
+            
+
 
         glMatrixMode(GL_MODELVIEW)
         glLoadIdentity()
@@ -79,6 +91,21 @@ class Graphic:
         
         glWindowPos2d(pos[0] + self.width / 2 - size[0] * anchor[0], pos[1] + self.height / 2 - size[1] * anchor[1])
         glDrawPixels(size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE, textData)
+    
+
+    def get_mouse_pos(self):
+        pos = pygame.mouse.get_pos()
+        pos = (-1.0 + 2.0 * pos[0] / self.width, 1.0 - 2.0 * pos[1] / self.height)
+        if self.fit:
+            if self.width < self.height:
+                return (pos[0], pos[1] / self.aspect_ratio)
+            else:
+                return (pos[0] * self.aspect_ratio, pos[1])
+        else:
+            if self.width > self.height:
+                return (pos[0], pos[1] / self.aspect_ratio)
+            else:
+                return (pos[0] * self.aspect_ratio, pos[1])
 
 
 
@@ -222,7 +249,8 @@ class Rectangle:
     - color (color)
 
     Methods:
-    - get_rect (returns a pygame rect of the rectangle)
+    - collidepoint (returns true if there is a point inside the rectangle)
+    - colliderect (returns true if there is a rectangle collision /!\ (Does not work with rotation) /!\)
     """
 
     def __init__(self, graphic: Graphic, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
@@ -254,11 +282,16 @@ class Rectangle:
         glColor4f(1.0, 1.0, 1.0, 1.0)
     
     
-    def get_rect(self) -> pygame.Rect:
-        size = (self.size[0] * 0.5, self.size[1] * 0.5)
-        pos = (self.pos[0] * 0.5, -self.pos[1] * 0.5)
-        return pygame.Rect((pos[0] + (self.graphic.width / 2), pos[1] + (self.graphic.height / 2) - size[1]), size)
+    def collidepoint(self, point: tuple) -> pygame.Rect:
+        rel = (point[0] - self.pos[0], point[1] - self.pos[1])
+        rel = (rel[0] * cos(self.angle * (-pi / 180)) - rel[1] * sin(self.angle * (-pi / 180)),
+               rel[0] * sin(self.angle * (-pi / 180)) + rel[1] * cos(self.angle * (-pi / 180)))
+        return (0 < rel[0] and rel[0] < self.size[0]) and (0 < rel[1] and rel[1] < self.size[1])
+    
 
+    def colliderect(self, other):
+        rel = (other.pos[0] - self.pos[0], other.pos[1] - self.pos[1]) 
+        return (other.size[0] > rel[0] + self.size[0]) and (rel[0] + 2 * self.size[0] > 0) and (rel[1] < self.size[1]) and (rel[1] + other.size[1] > 0)
 
 
 
