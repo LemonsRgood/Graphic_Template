@@ -345,6 +345,7 @@ class Text(Image):
         self.update()
     
     
+    
     def set_size(self, size: float):
         self.text_size = size
         aspect_ratio = self.text_image.get_width() / self.text_image.get_height()

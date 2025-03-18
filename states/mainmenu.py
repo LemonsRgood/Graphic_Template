@@ -14,9 +14,9 @@ class MainMenu:
         self.circle = Polygon(self.app.screen, (-100, 100), (67, 67), 3, color=(1.0, 0.5, 1.0, 1.0))
         
         self.line = Line(self.app.screen, (-200, 60), (0, 0), (100, 0), 30, color=(1, 0.4, 0, 1))
-        self.font = pygame.font.SysFont('arial', 64)
+        self.font = pygame.font.SysFont('arial', 999)
         
-        self.text = Text(self.app.screen, self.font, "LOL", (0, 0), 64)
+        self.text = Text(self.app.screen, self.font, "LOL", (0, 0), 64, color=(1.0, 1.0, 0.4, 1.0))
         
 
 
@@ -34,7 +34,8 @@ class MainMenu:
 
         self.Aimage.angle += 50 * dt
         self.Bimage.angle -= 30 * dt
-        self.text.set_size(64 + 32 * sin(time.time()))
+        self.text.set_size(600 + 400 * sin(time.time()))
+        self.text.angle += 250 * dt
 
         pos = pygame.mouse.get_pos()
         if self.rec.get_rect().collidepoint(pos):
