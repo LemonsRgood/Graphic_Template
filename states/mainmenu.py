@@ -7,10 +7,11 @@ class MainMenu:
     def __init__(self, app):
         self.app = app
         self.last_time = time.time()
+        self.hit_rect = Rectangle(self.app.screen, (0, 0), (0.02, 0.02), color=(1.0, 0.0, 0.0, 1.0))
         
         self.image = Image(self.app.screen, "textures/shrek.png", (0, 0), (1.0, 1.0))
-        self.rect = Rectangle(self.app.screen, (-0.5, 0), (0.2, 0.3), 0, color=(random.random(), random.random(), random.random(), 1.0))
-        self.mouse_rect = Rectangle(self.app.screen, (0, 0), (0.4, 0.4), 0, color=(1.0, 1.0, 1.0, 0.3))
+        self.line = Line(self.app.screen, (0, 0), (-0.1, -0.1), (0.3, 0.5), color=(random.random(), random.random(), random.random(), 1.0))
+        self.mouse_line = Line(self.app.screen, (0, 0), (0.1, -0.2), (-0.2, 0.5), color=(1.0, 1.0, 1.0, 0.3))
 
 
     def events(self):
@@ -28,9 +29,13 @@ class MainMenu:
 
         self.image.angle += 40 * dt
 
-        self.mouse_rect.pos = self.app.screen.get_mouse_pos()
-        if self.rect.colliderect(self.mouse_rect):
-            print(time.time())
+        self.mouse_line.pos = self.app.screen.get_mouse_pos()
+        hit, hit_pos = self.line.collideline(self.mouse_line)
+        
+        if hit:
+            self.hit_rect.pos = (hit_pos[0] - self.hit_rect.size[0] * 0.5, hit_pos[1] - self.hit_rect.size[1] * 0.5)
+        else:
+            self.hit_rect.pos = (999, 999)
     
 
 
@@ -39,8 +44,9 @@ class MainMenu:
 
         
         self.image.render()
-        self.rect.render()
-        self.mouse_rect.render()
+        self.line.render()
+        self.mouse_line.render()
+        self.hit_rect.render()
         
         
         pygame.display.flip()

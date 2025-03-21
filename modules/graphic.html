@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Python: module modules.graphic</title>
+<title>Python: module graphic</title>
 </head><body>
 
 <table class="heading">
 <tr class="heading-text decor">
-<td class="title">&nbsp;<br><strong class="title"><a href="modules.html" class="white">modules</a>.graphic</strong></td>
+<td class="title">&nbsp;<br><strong class="title">graphic</strong></td>
 <td class="extra"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cstst1%5Cdownloads%5Cgraphic_template%5Cmodules%5Cgraphic.py">c:\users\stst1\downloads\graphic_template\modules\graphic.py</a></td></tr></table>
     <p><span class="code">Code&nbsp;by:&nbsp;<br>
 -&nbsp;Stian&nbsp;Møinichen&nbsp;Strøm<br>
@@ -54,17 +54,17 @@
 <dt class="heading-text"><a href="builtins.html#object">builtins.object</a>
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="modules.graphic.html#Graphic">Graphic</a>
-</dt><dt class="heading-text"><a href="modules.graphic.html#Image">Image</a>
+<dt class="heading-text"><a href="graphic.html#Graphic">Graphic</a>
+</dt><dt class="heading-text"><a href="graphic.html#Image">Image</a>
 </dt><dd>
 <dl>
-<dt class="heading-text"><a href="modules.graphic.html#Text">Text</a>
+<dt class="heading-text"><a href="graphic.html#Text">Text</a>
 </dt></dl>
 </dd>
-<dt class="heading-text"><a href="modules.graphic.html#Line">Line</a>
-</dt><dt class="heading-text"><a href="modules.graphic.html#Polygon">Polygon</a>
-</dt><dt class="heading-text"><a href="modules.graphic.html#Rectangle">Rectangle</a>
-</dt><dt class="heading-text"><a href="modules.graphic.html#Triangle">Triangle</a>
+<dt class="heading-text"><a href="graphic.html#Line">Line</a>
+</dt><dt class="heading-text"><a href="graphic.html#Polygon">Polygon</a>
+</dt><dt class="heading-text"><a href="graphic.html#Rectangle">Rectangle</a>
+</dt><dt class="heading-text"><a href="graphic.html#Triangle">Triangle</a>
 </dt></dl>
 </dd>
 </dl>
@@ -74,26 +74,27 @@
 <td class="section-title" colspan=3>&nbsp;<br><a name="Graphic">class <strong>Graphic</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Graphic">Graphic</a>(width,&nbsp;height,&nbsp;antialiasing=False,&nbsp;buffers=1,&nbsp;samples=4)<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Graphic">Graphic</a>(width:&nbsp;float,&nbsp;height:&nbsp;float,&nbsp;fit=False,&nbsp;antialiasing=False,&nbsp;buffers=1,&nbsp;samples=4)&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;width&nbsp;(window&nbsp;width)<br>
 -&nbsp;height&nbsp;(window&nbsp;height)<br>
--&nbsp;zoom&nbsp;(zoom)<br>
+-&nbsp;fir&nbsp;(choose&nbsp;a&nbsp;projection&nbsp;to&nbsp;fit&nbsp;everything&nbsp;on&nbsp;the&nbsp;screen)<br>
 -&nbsp;antialiasing&nbsp;(smoother&nbsp;edges)<br>
 -&nbsp;buffers&nbsp;(antialiasing&nbsp;buffers)<br>
 -&nbsp;samples&nbsp;(antialiasing&nbsp;samples)<br>
 &nbsp;<br>
 Methods<br>
 -&nbsp;clear_screen&nbsp;(clears&nbsp;the&nbsp;screen&nbsp;and&nbsp;fills&nbsp;it&nbsp;with&nbsp;a&nbsp;given&nbsp;color)<br>
--&nbsp;drawText&nbsp;(draws&nbsp;text&nbsp;on&nbsp;the&nbsp;screen&nbsp;given&nbsp;a&nbsp;pygame&nbsp;font)<br>&nbsp;</span></td></tr>
+-&nbsp;drawText&nbsp;(draws&nbsp;text&nbsp;on&nbsp;the&nbsp;screen&nbsp;given&nbsp;a&nbsp;pygame&nbsp;font)<br>
+-&nbsp;get_mouse&nbsp;(returns&nbsp;mouse&nbsp;position&nbsp;in&nbsp;screen&nbsp;space)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="Graphic-__init__"><strong>__init__</strong></a>(self, width, height, antialiasing=False, buffers=1, samples=4)</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Graphic-__init__"><strong>__init__</strong></a>(self, width: float, height: float, fit=False, antialiasing=False, buffers=1, samples=4) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Graphic-clear_screen"><strong>clear_screen</strong></a>(self, color=(0.0, 0.0, 0.0, 0.0))</dt></dl>
+<dl><dt><a name="Graphic-clear_screen"><strong>clear_screen</strong></a>(self, color=(0.0, 0.0, 0.0, 0.0)) -&gt; None</dt></dl>
 
-<dl><dt><a name="Graphic-drawText"><strong>drawText</strong></a>(self, font: pygame.font.Font, pos: tuple, size: float, text: str, anchor=(0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0))</dt></dl>
+<dl><dt><a name="Graphic-get_mouse_pos"><strong>get_mouse_pos</strong></a>(self) -&gt; tuple</dt></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -109,7 +110,7 @@ Data descriptors defined here:<br>
 <td class="section-title" colspan=3>&nbsp;<br><a name="Image">class <strong>Image</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Image">Image</a>(graphic:&nbsp;modules.graphic.<a href="#Graphic">Graphic</a>,&nbsp;image_path:&nbsp;str,&nbsp;pos:&nbsp;tuple,&nbsp;size:&nbsp;tuple,&nbsp;angle=0,&nbsp;anchor=(0.0,&nbsp;0.0),&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Image">Image</a>(graphic:&nbsp;graphic.<a href="#Graphic">Graphic</a>,&nbsp;image_path:&nbsp;str,&nbsp;pos:&nbsp;tuple,&nbsp;size:&nbsp;tuple,&nbsp;angle=0,&nbsp;anchor=(0.5,&nbsp;0.5),&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;graphic&nbsp;(graphics&nbsp;window)<br>
@@ -118,12 +119,14 @@ Parameters:<br>
 -&nbsp;size&nbsp;(size)<br>
 -&nbsp;angle&nbsp;(rotation&nbsp;angle)<br>
 -&nbsp;anchor&nbsp;(anchorpoint&nbsp;of&nbsp;the&nbsp;image)<br>
--&nbsp;color&nbsp;(color)<br>&nbsp;</span></td></tr>
+-&nbsp;color&nbsp;(color)<br>
+Methods:<br>
+-&nbsp;render&nbsp;(draws&nbsp;the&nbsp;image)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="Image-__init__"><strong>__init__</strong></a>(self, graphic: modules.graphic.Graphic, image_path: str, pos: tuple, size: tuple, angle=0, anchor=(0.0, 0.0), color=(1.0, 1.0, 1.0, 1.0))</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Image-__init__"><strong>__init__</strong></a>(self, graphic: graphic.Graphic, image_path: str, pos: tuple, size: tuple, angle=0, anchor=(0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Image-render"><strong>render</strong></a>(self)</dt></dl>
+<dl><dt><a name="Image-render"><strong>render</strong></a>(self) -&gt; None</dt></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -139,7 +142,7 @@ Data descriptors defined here:<br>
 <td class="section-title" colspan=3>&nbsp;<br><a name="Line">class <strong>Line</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Line">Line</a>(graphic:&nbsp;modules.graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;a:&nbsp;tuple,&nbsp;b:&nbsp;tuple,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Line">Line</a>(graphic:&nbsp;graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;a:&nbsp;tuple,&nbsp;b:&nbsp;tuple,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;graphic&nbsp;(graphics&nbsp;window)<br>
@@ -147,12 +150,20 @@ Parameters:<br>
 -&nbsp;a&nbsp;(point&nbsp;a)<br>
 -&nbsp;b&nbsp;(point&nbsp;b)<br>
 -&nbsp;angle&nbsp;(rotation&nbsp;angle)<br>
--&nbsp;color&nbsp;(color)<br>&nbsp;</span></td></tr>
+-&nbsp;color&nbsp;(color)<br>
+Methods:<br>
+-&nbsp;update&nbsp;(updates&nbsp;line&nbsp;normal)<br>
+-&nbsp;render&nbsp;(draw&nbsp;the&nbsp;line)<br>
+-&nbsp;collideline&nbsp;(returns&nbsp;if&nbsp;it&nbsp;collided&nbsp;and&nbsp;the&nbsp;position&nbsp;of&nbsp;the&nbsp;collision)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="Line-__init__"><strong>__init__</strong></a>(self, graphic: modules.graphic.Graphic, pos: tuple, a: tuple, b: tuple, angle=0, color=(1.0, 1.0, 1.0, 1.0))</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Line-__init__"><strong>__init__</strong></a>(self, graphic: graphic.Graphic, pos: tuple, a: tuple, b: tuple, color=(1.0, 1.0, 1.0, 1.0)) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Line-render"><strong>render</strong></a>(self)</dt></dl>
+<dl><dt><a name="Line-collideline"><strong>collideline</strong></a>(self, other) -&gt; tuple[bool, tuple]</dt></dl>
+
+<dl><dt><a name="Line-render"><strong>render</strong></a>(self) -&gt; None</dt></dl>
+
+<dl><dt><a name="Line-update"><strong>update</strong></a>(self) -&gt; None</dt></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -168,7 +179,7 @@ Data descriptors defined here:<br>
 <td class="section-title" colspan=3>&nbsp;<br><a name="Polygon">class <strong>Polygon</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Polygon">Polygon</a>(graphic:&nbsp;modules.graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;radius,&nbsp;segments=3,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Polygon">Polygon</a>(graphic:&nbsp;graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;radius,&nbsp;segments=3,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;graphic&nbsp;(graphics&nbsp;window)<br>
@@ -176,12 +187,14 @@ Parameters:<br>
 -&nbsp;radius&nbsp;(radius)<br>
 -&nbsp;segments&nbsp;(number&nbsp;og&nbsp;edges)<br>
 -&nbsp;angle&nbsp;(rotation&nbsp;angle)<br>
--&nbsp;color&nbsp;(color)<br>&nbsp;</span></td></tr>
+-&nbsp;color&nbsp;(color)<br>
+Methods:<br>
+-&nbsp;render&nbsp;(draw&nbsp;polygon)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="Polygon-__init__"><strong>__init__</strong></a>(self, graphic: modules.graphic.Graphic, pos: tuple, radius, segments=3, angle=0, color=(1.0, 1.0, 1.0, 1.0))</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Polygon-__init__"><strong>__init__</strong></a>(self, graphic: graphic.Graphic, pos: tuple, radius, segments=3, angle=0, color=(1.0, 1.0, 1.0, 1.0)) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Polygon-render"><strong>render</strong></a>(self)</dt></dl>
+<dl><dt><a name="Polygon-render"><strong>render</strong></a>(self) -&gt; None</dt></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -197,7 +210,7 @@ Data descriptors defined here:<br>
 <td class="section-title" colspan=3>&nbsp;<br><a name="Rectangle">class <strong>Rectangle</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Rectangle">Rectangle</a>(graphic:&nbsp;modules.graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;size:&nbsp;tuple,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Rectangle">Rectangle</a>(graphic:&nbsp;graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;size:&nbsp;tuple,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;graphic&nbsp;(graphics&nbsp;window)<br>
@@ -207,12 +220,16 @@ Parameters:<br>
 -&nbsp;color&nbsp;(color)<br>
 &nbsp;<br>
 Methods:<br>
--&nbsp;get_rect&nbsp;(returns&nbsp;a&nbsp;pygame&nbsp;rect&nbsp;of&nbsp;the&nbsp;rectangle)<br>&nbsp;</span></td></tr>
+-&nbsp;Render&nbsp;(draws&nbsp;the&nbsp;rectangle)<br>
+-&nbsp;collidepoint&nbsp;(returns&nbsp;true&nbsp;if&nbsp;there&nbsp;is&nbsp;a&nbsp;point&nbsp;inside&nbsp;the&nbsp;rectangle)<br>
+-&nbsp;colliderect&nbsp;(returns&nbsp;true&nbsp;if&nbsp;there&nbsp;is&nbsp;a&nbsp;rectangle&nbsp;collision&nbsp;/!\&nbsp;(Does&nbsp;not&nbsp;work&nbsp;with&nbsp;rotation)&nbsp;/!\)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="Rectangle-__init__"><strong>__init__</strong></a>(self, graphic: modules.graphic.Graphic, pos: tuple, size: tuple, angle=0, color=(1.0, 1.0, 1.0, 1.0))</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Rectangle-__init__"><strong>__init__</strong></a>(self, graphic: graphic.Graphic, pos: tuple, size: tuple, angle=0, color=(1.0, 1.0, 1.0, 1.0)) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Rectangle-get_rect"><strong>get_rect</strong></a>(self) -&gt; pygame.rect.Rect</dt></dl>
+<dl><dt><a name="Rectangle-collidepoint"><strong>collidepoint</strong></a>(self, point: tuple) -&gt; pygame.rect.Rect</dt></dl>
+
+<dl><dt><a name="Rectangle-colliderect"><strong>colliderect</strong></a>(self, other) -&gt; None</dt></dl>
 
 <dl><dt><a name="Rectangle-render"><strong>render</strong></a>(self)</dt></dl>
 
@@ -227,10 +244,10 @@ Data descriptors defined here:<br>
 </td></tr></table> <p>
 <table class="section">
 <tr class="decor title-decor heading-text">
-<td class="section-title" colspan=3>&nbsp;<br><a name="Text">class <strong>Text</strong></a>(<a href="modules.graphic.html#Image">Image</a>)</td></tr>
+<td class="section-title" colspan=3>&nbsp;<br><a name="Text">class <strong>Text</strong></a>(<a href="graphic.html#Image">Image</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Text">Text</a>(graphic:&nbsp;modules.graphic.<a href="#Graphic">Graphic</a>,&nbsp;font:&nbsp;pygame.font.Font,&nbsp;text:&nbsp;str,&nbsp;pos:&nbsp;tuple,&nbsp;size:&nbsp;float,&nbsp;angle=0.0,&nbsp;anchor=(0.0,&nbsp;0.0),&nbsp;antialiased=True,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Text">Text</a>(graphic:&nbsp;graphic.<a href="#Graphic">Graphic</a>,&nbsp;font:&nbsp;pygame.font.Font,&nbsp;text:&nbsp;str,&nbsp;pos:&nbsp;tuple,&nbsp;size:&nbsp;float,&nbsp;angle=0.0,&nbsp;anchor=(0.5,&nbsp;0.5),&nbsp;antialiased=True,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;graphic&nbsp;(graphics&nbsp;window)<br>
@@ -240,27 +257,29 @@ Parameters:<br>
 -&nbsp;angle&nbsp;(rotation&nbsp;angle)<br>
 -&nbsp;anchor&nbsp;(anchorpoint&nbsp;of&nbsp;the&nbsp;image)<br>
 -&nbsp;antialiased&nbsp;(text&nbsp;antialiased)<br>
--&nbsp;color&nbsp;(color)<br>&nbsp;</span></td></tr>
+-&nbsp;color&nbsp;(color)<br>
+Methods:<br>
+-&nbsp;render&nbsp;(draws&nbsp;the&nbsp;text)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn"><dl><dt>Method resolution order:</dt>
-<dd><a href="modules.graphic.html#Text">Text</a></dd>
-<dd><a href="modules.graphic.html#Image">Image</a></dd>
+<dd><a href="graphic.html#Text">Text</a></dd>
+<dd><a href="graphic.html#Image">Image</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="Text-__init__"><strong>__init__</strong></a>(self, graphic: modules.graphic.Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.0, 0.0), antialiased=True, color=(1.0, 1.0, 1.0, 1.0))</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Text-__init__"><strong>__init__</strong></a>(self, graphic: graphic.Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.5, 0.5), antialiased=True, color=(1.0, 1.0, 1.0, 1.0)) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Text-set_size"><strong>set_size</strong></a>(self, size: float)</dt></dl>
+<dl><dt><a name="Text-set_size"><strong>set_size</strong></a>(self, size: float) -&gt; None</dt></dl>
 
-<dl><dt><a name="Text-update"><strong>update</strong></a>(self)</dt></dl>
-
-<hr>
-Methods inherited from <a href="modules.graphic.html#Image">Image</a>:<br>
-<dl><dt><a name="Text-render"><strong>render</strong></a>(self)</dt></dl>
+<dl><dt><a name="Text-update"><strong>update</strong></a>(self) -&gt; None</dt></dl>
 
 <hr>
-Data descriptors inherited from <a href="modules.graphic.html#Image">Image</a>:<br>
+Methods inherited from <a href="graphic.html#Image">Image</a>:<br>
+<dl><dt><a name="Text-render"><strong>render</strong></a>(self) -&gt; None</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="graphic.html#Image">Image</a>:<br>
 <dl><dt><strong>__dict__</strong></dt>
 <dd><span class="code">dictionary&nbsp;for&nbsp;instance&nbsp;variables</span></dd>
 </dl>
@@ -273,7 +292,7 @@ Data descriptors inherited from <a href="modules.graphic.html#Image">Image</a>:<
 <td class="section-title" colspan=3>&nbsp;<br><a name="Triangle">class <strong>Triangle</strong></a>(<a href="builtins.html#object">builtins.object</a>)</td></tr>
     
 <tr><td class="decor title-decor" rowspan=2><span class="code">&nbsp;&nbsp;&nbsp;</span></td>
-<td class="decor title-decor" colspan=2><span class="code"><a href="#Triangle">Triangle</a>(graphic:&nbsp;modules.graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;a:&nbsp;tuple,&nbsp;b:&nbsp;tuple,&nbsp;c:&nbsp;tuple,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))<br>
+<td class="decor title-decor" colspan=2><span class="code"><a href="#Triangle">Triangle</a>(graphic:&nbsp;graphic.<a href="#Graphic">Graphic</a>,&nbsp;pos:&nbsp;tuple,&nbsp;a:&nbsp;tuple,&nbsp;b:&nbsp;tuple,&nbsp;c:&nbsp;tuple,&nbsp;angle=0,&nbsp;color=(1.0,&nbsp;1.0,&nbsp;1.0,&nbsp;1.0))&nbsp;-&amp;gt;&nbsp;None<br>
 &nbsp;<br>
 Parameters:<br>
 -&nbsp;graphic&nbsp;(graphics&nbsp;window)<br>
@@ -282,12 +301,14 @@ Parameters:<br>
 -&nbsp;b&nbsp;(point&nbsp;b)<br>
 -&nbsp;c&nbsp;(point&nbsp;c)<br>
 -&nbsp;angle&nbsp;(rotation&nbsp;angle)<br>
--&nbsp;color&nbsp;(color)<br>&nbsp;</span></td></tr>
+-&nbsp;color&nbsp;(color)<br>
+Methods:<br>
+-&nbsp;render&nbsp;(draws&nbsp;the&nbsp;triangle)<br>&nbsp;</span></td></tr>
 <tr><td>&nbsp;</td>
 <td class="singlecolumn">Methods defined here:<br>
-<dl><dt><a name="Triangle-__init__"><strong>__init__</strong></a>(self, graphic: modules.graphic.Graphic, pos: tuple, a: tuple, b: tuple, c: tuple, angle=0, color=(1.0, 1.0, 1.0, 1.0))</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
+<dl><dt><a name="Triangle-__init__"><strong>__init__</strong></a>(self, graphic: graphic.Graphic, pos: tuple, a: tuple, b: tuple, c: tuple, angle=0, color=(1.0, 1.0, 1.0, 1.0)) -&gt; None</dt><dd><span class="code">Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</span></dd></dl>
 
-<dl><dt><a name="Triangle-render"><strong>render</strong></a>(self)</dt></dl>
+<dl><dt><a name="Triangle-render"><strong>render</strong></a>(self) -&gt; None</dt></dl>
 
 <hr>
 Data descriptors defined here:<br>
@@ -2952,8 +2973,10 @@ Return&nbsp;the&nbsp;size&nbsp;in&nbsp;bytes&nbsp;of&nbsp;a&nbsp;C&nbsp;instance
 <strong>WINDOWSHOWN</strong> = 32774<br>
 <strong>WINDOWSIZECHANGED</strong> = 32779<br>
 <strong>WINDOWTAKEFOCUS</strong> = 32788<br>
+<strong>add</strong> = &lt;ufunc 'add'&gt;<br>
 <strong>cos</strong> = &lt;ufunc 'cos'&gt;<br>
 <strong>ctypes_version</strong> = [1, 1, 0]<br>
+<strong>divide</strong> = &lt;ufunc 'divide'&gt;<br>
 <strong>glAccum</strong> = &lt;OpenGL.platform.baseplatform.glAccum object&gt;<br>
 <strong>glActiveShaderProgram</strong> = &lt;OpenGL.platform.baseplatform.glActiveShaderProgram object&gt;<br>
 <strong>glActiveTexture</strong> = &lt;OpenGL.platform.baseplatform.glActiveTexture object&gt;<br>
@@ -4189,5 +4212,7 @@ Return&nbsp;the&nbsp;size&nbsp;in&nbsp;bytes&nbsp;of&nbsp;a&nbsp;C&nbsp;instance
 <strong>multiply</strong> = &lt;ufunc 'multiply'&gt;<br>
 <strong>pi</strong> = 3.141592653589793<br>
 <strong>sin</strong> = &lt;ufunc 'sin'&gt;<br>
+<strong>sqrt</strong> = &lt;ufunc 'sqrt'&gt;<br>
+<strong>subtract</strong> = &lt;ufunc 'subtract'&gt;<br>
 <strong>void</strong> = None</td></tr></table>
 </body></html>

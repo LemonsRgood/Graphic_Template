@@ -10,7 +10,7 @@ import pygame
 from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
-from numpy import pi, sin, cos, multiply
+from numpy import sqrt, pi, sin, cos, add, subtract, multiply, divide, dot
 
 
 
@@ -31,7 +31,7 @@ class Graphic:
     - get_mouse (returns mouse position in screen space)
     """
 
-    def __init__(self, width: float, height: float, fit = False, antialiasing = False, buffers = 1, samples = 4):
+    def __init__(self, width: float, height: float, fit = False, antialiasing = False, buffers = 1, samples = 4) -> None:
         self.width = width
         self.height = height
         self.fit = fit
@@ -77,23 +77,13 @@ class Graphic:
     
 
 
-    def clear_screen(self, color = (0.0, 0.0, 0.0, 0.0)):
+    def clear_screen(self, color = (0.0, 0.0, 0.0, 0.0)) -> None:
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
         glLoadIdentity()
         glClearColor(*color)
 
 
-
-    def drawText(self, font: pygame.font.Font, pos: tuple, size: float, text: str, anchor = (0.5, 0.5), color=(1.0, 1.0, 1.0, 1.0)):                                           
-        textSurface = font.render(text, True, multiply(color, 255)).convert_alpha()
-        textData = pygame.image.tostring(textSurface, "RGBA", True)
-        size = (textSurface.get_width() * size, textSurface.get_height() * size)
-        
-        glWindowPos2d(pos[0] + self.width / 2 - size[0] * anchor[0], pos[1] + self.height / 2 - size[1] * anchor[1])
-        glDrawPixels(size[0], size[1], GL_RGBA, GL_UNSIGNED_BYTE, textData)
-    
-
-    def get_mouse_pos(self):
+    def get_mouse_pos(self) -> tuple:
         pos = pygame.mouse.get_pos()
         pos = (-1.0 + 2.0 * pos[0] / self.width, 1.0 - 2.0 * pos[1] / self.height)
         if self.fit:
@@ -118,23 +108,33 @@ class Line:
     - b (point b)
     - angle (rotation angle)
     - color (color)
+    Methods:
+    - update (updates line normal)
+    - render (draw the line)
+    - collideline (returns if it collided and the position of the collision)
     """
 
-    def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, color = (1.0, 1.0, 1.0, 1.0)) -> None:
         self.graphic = graphic
 
         self.color = color
         self.pos = pos
         self.a = a
         self.b = b
-        self.angle = angle
+        
+        self.update()
+    
+    
+    def update(self) -> None:
+        self.normal = subtract(self.b, self.a)
+        self.normal = divide(self.normal, sqrt(dot(self.normal, self.normal)))
+        self.normal = (self.normal[1], -self.normal[0])
+        self.center = divide(add(self.a, self.b), 2)
     
 
-    def render(self):
+    def render(self) -> None:
         glPushMatrix()
         glTranslatef(self.pos[0], self.pos[1], 0)
-        glRotatef(self.angle, 0, 0, 1)
-
 
         glBegin(GL_LINES)
         
@@ -145,6 +145,27 @@ class Line:
 
         glEnd()
         glPopMatrix()
+    
+    
+    def collideline(self, other) -> tuple[bool, tuple]:
+        a1 = add(self.pos, self.a)
+        b1 = add(self.pos, self.b)
+        a2 = add(other.pos, other.a)
+        b2 = add(other.pos, other.b)
+        v1 = subtract(self.b, self.a)
+        
+        try:
+            d = dot(other.normal, subtract(a2, a1)) / dot(other.normal, v1)
+            
+            if 0.0 < d and d < 1.0:
+                v2 = subtract(other.b, other.a)
+                hit_pos = add(a1, multiply(d, v1))
+                c = subtract(hit_pos, add(other.pos, other.center))
+                if dot(c, c) < dot(v2, v2) * 0.25:
+                    return True, hit_pos
+        except: pass
+        
+        return False, (0, 0)
 
 
 
@@ -158,9 +179,11 @@ class Polygon:
     - segments (number og edges)
     - angle (rotation angle)
     - color (color)
+    Methods:
+    - render (draw polygon)
     """
 
-    def __init__(self, graphic: Graphic, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, radius, segments = 3, angle = 0, color = (1.0, 1.0, 1.0, 1.0)) -> None:
         self.graphic = graphic
 
         if type(radius) == float or type(radius) == int:
@@ -174,7 +197,7 @@ class Polygon:
         self.angle = angle
     
 
-    def render(self):
+    def render(self) -> None:
         glPushMatrix()
         glTranslatef(self.pos[0], self.pos[1], 0)
         glRotatef(self.angle, 0, 0, 1)
@@ -205,9 +228,11 @@ class Triangle:
     - c (point c)
     - angle (rotation angle)
     - color (color)
+    Methods:
+    - render (draws the triangle)
     """
 
-    def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, a: tuple, b: tuple, c: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)) -> None:
         self.graphic = graphic 
 
         self.color = color
@@ -218,7 +243,7 @@ class Triangle:
         self.angle = angle
     
 
-    def render(self):
+    def render(self) -> None:
         glPushMatrix()
         glTranslatef(self.pos[0], self.pos[1], 0)
         glRotatef(self.angle, 0, 0, 1)
@@ -249,11 +274,12 @@ class Rectangle:
     - color (color)
 
     Methods:
+    - Render (draws the rectangle)
     - collidepoint (returns true if there is a point inside the rectangle)
     - colliderect (returns true if there is a rectangle collision /!\ (Does not work with rotation) /!\)
     """
 
-    def __init__(self, graphic: Graphic, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, pos: tuple, size: tuple, angle = 0, color = (1.0, 1.0, 1.0, 1.0)) -> None:
         self.graphic = graphic
 
         self.color = color
@@ -289,7 +315,7 @@ class Rectangle:
         return (0 < rel[0] and rel[0] < self.size[0]) and (0 < rel[1] and rel[1] < self.size[1])
     
 
-    def colliderect(self, other):
+    def colliderect(self, other) -> None:
         rel = (other.pos[0] - self.pos[0], other.pos[1] - self.pos[1]) 
         return (other.size[0] > rel[0] + self.size[0]) and (rel[0] + 2 * self.size[0] > 0) and (rel[1] < self.size[1]) and (rel[1] + other.size[1] > 0)
 
@@ -305,9 +331,11 @@ class Image:
     - angle (rotation angle)
     - anchor (anchorpoint of the image)
     - color (color)
+    Methods:
+    - render (draws the image)
     """
 
-    def __init__(self, graphic: Graphic, image_path: str, pos: tuple, size: tuple, angle = 0, anchor = (0.5, 0.5), color = (1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, image_path: str, pos: tuple, size: tuple, angle = 0, anchor = (0.5, 0.5), color = (1.0, 1.0, 1.0, 1.0)) -> None:
         self.graphic = graphic
 
         self.color = color
@@ -328,7 +356,7 @@ class Image:
     
 
 
-    def render(self):
+    def render(self) -> None:
         # Apply rotation
         glPushMatrix()
         glTranslatef(self.pos[0] - self.size[0] * (self.anchor[0] - 0.5), self.pos[1] - self.size[1] * (self.anchor[1] - 0.5), 0)
@@ -365,9 +393,11 @@ class Text(Image):
     - anchor (anchorpoint of the image)
     - antialiased (text antialiased)
     - color (color)
+    Methods:
+    - render (draws the text)
     """
     
-    def __init__(self, graphic: Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.5, 0.5), antialiased = True, color=(1.0, 1.0, 1.0, 1.0)):
+    def __init__(self, graphic: Graphic, font: pygame.font.Font, text: str, pos: tuple, size: float, angle=0.0, anchor=(0.5, 0.5), antialiased = True, color=(1.0, 1.0, 1.0, 1.0)) -> None:
         self.graphic = graphic
         self.font = font
         self.text = text
@@ -382,13 +412,13 @@ class Text(Image):
         self.update()
     
     
-    def set_size(self, size: float):
+    def set_size(self, size: float) -> None:
         self.text_size = size
         aspect_ratio = self.text_image.get_width() / self.text_image.get_height()
         self.size = (aspect_ratio * self.text_size, self.text_size)
     
     
-    def update(self):
+    def update(self) -> None:
         self.text_image = self.font.render(self.text, self.antialiased, (255, 255, 255))
         self.set_size(self.text_size)
         
