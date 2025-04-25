@@ -409,6 +409,8 @@ class Text(Image):
         
         self.antialiased = antialiased
         self.color = color
+        
+        self.texture_id = glGenTextures(1)
         self.update()
     
     
@@ -425,7 +427,6 @@ class Text(Image):
         texture_data = pygame.image.tostring(self.text_image, "RGBA", True)
         self.width, self.height = self.text_image.get_size()
         
-        self.texture_id = glGenTextures(1)
         glBindTexture(GL_TEXTURE_2D, self.texture_id)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
